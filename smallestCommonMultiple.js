@@ -17,23 +17,19 @@ For example, if given 1 and 3, find the smallest common multiple of both 1 and 3
 
 function smallestCommons(arr) {
 /*
-1. If numbers are consecutive, return their multiple.
-2. Let the large number be x and smaller number be y. Let common be the result to return.
-2. First let common = x*(x-1). This is the smallest number that can possibly be divided by all numbers between x and y.
-3. If not divisible, add x to common and check again. To be divisible by x, common must increase in multiples of x. We can then check for division by all other numbers between x and y.
+1. Find min and max in the provided arr.
+2. First let common = max*(max-1). This is the smallest number that can possibly be divided by all numbers ranging from min to max.
+3. If not divisible, check next multiple of max.
 4. Repeat until we find the lowest common multiple.
 */
   
-  if (Math.abs(arr[0] - arr[1]) == 1)
-    return arr[0]*arr[1]; 
-  else
-    arr.sort((a,b) => a-b);
+  const [min, max] = arr.sort((a,b) => a-b);
 
   let divisible, x = 0, common;
   do {
     divisible = true;
-    common = arr[1]*(arr[1]-1) + x*arr[1];
-    for (let i = arr[1]; i >= arr[0]; i--) {
+    common = max*(max-1) + x*max;
+    for (let i = max; i >= min; i--) {
       if (common%i != 0) {
         divisible = false;
       }
