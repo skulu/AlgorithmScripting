@@ -12,7 +12,7 @@ Return {status: "CLOSED", change: [...]} with cash-in-drawer as the cashAvailabl
 
 Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, sorted in highest to lowest order, as the cashAvailableue of the change key.
 
--Currency denom-	      -Amount-
+-Currency denomVal-	      -Amount-
 Penny	                $0.01 (PENNY)
 Nickel	              $0.05 (NICKEL)
 Dime	                $0.1 (DIME)
@@ -53,14 +53,14 @@ function checkCashRegister(price, cash, cid) {
 
   for (let i = cid.length-1; i >= 0; i--) {
     let [key, cashAvailable] = cid[i];
-    let denom = denominations[key];
+    let denomVal = denominations[key];
     let amount = 0;
 
-    if (denom <= changeVal && cashAvailable > 0) {
+    if (denomVal <= changeVal && cashAvailable > 0) {
       if (cashAvailable <= changeVal) {
         amount = cashAvailable;
       } else {
-        amount = Math.floor(changeVal/denom) * denom;
+        amount = Math.floor(changeVal/denomVal) * denomVal;
         result.status = "OPEN";
       }
       change = change.concat([[key, amount]]);
@@ -81,7 +81,3 @@ function checkCashRegister(price, cash, cid) {
   }
   return result;
 }
-
-let result = checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])
-
-console.log(result)
