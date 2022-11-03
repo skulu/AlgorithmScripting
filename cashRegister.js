@@ -8,11 +8,11 @@ The checkCashRegister() function should always return an object with a status ke
 
 Return {status: "INSUFFICIENT_FUNDS", change: []} if cash-in-drawer is less than the change due, or if you cannot return the exact change.
 
-Return {status: "CLOSED", change: [...]} with cash-in-drawer as the value for the key change if it is equal to the change due.
+Return {status: "CLOSED", change: [...]} with cash-in-drawer as the cashAvailableue for the key change if it is equal to the change due.
 
-Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, sorted in highest to lowest order, as the value of the change key.
+Otherwise, return {status: "OPEN", change: [...]}, with the change due in coins and bills, sorted in highest to lowest order, as the cashAvailableue of the change key.
 
--Currency Unit-	      -Amount-
+-Currency denom-	      -Amount-
 Penny	                $0.01 (PENNY)
 Nickel	              $0.05 (NICKEL)
 Dime	                $0.1 (DIME)
@@ -36,7 +36,7 @@ checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUART
 */
 
 function checkCashRegister(price, cash, cid) {
-  let units = {
+  let denominations = {
     "PENNY"       : 0.01,
     "NICKEL"      : 0.05,
     "DIME"        : 0.1,
@@ -52,21 +52,20 @@ function checkCashRegister(price, cash, cid) {
   let result = {status: "CLOSED"}; // assume status closed until later if we do not wipe out any denomination of cash
 
   for (let i = cid.length-1; i >= 0; i--) {
-    let key = cid[i][0];
-    let val = cid[i][1];
-    let unit = units[key];
+    let [key, cashAvailable] = cid[i];
+    let denom = denominations[key];
     let amount = 0;
 
-    if (unit <= changeVal && val > 0) {
-      if (val <= changeVal) {
-        amount = val;
+    if (denom <= changeVal && cashAvailable > 0) {
+      if (cashAvailable <= changeVal) {
+        amount = cashAvailable;
       } else {
-        amount = Math.floor(changeVal/unit) * unit;
+        amount = Math.floor(changeVal/denom) * denom;
         result.status = "OPEN";
       }
       change = change.concat([[key, amount]]);
       changeVal -= amount;
-      changeVal = changeVal.toFixed(2);
+      changeVal = changeVal.toFixed(2); //fix JavaScript float precision
     }
     if (changeVal == 0) {
       result.change = change;
@@ -82,3 +81,7 @@ function checkCashRegister(price, cash, cid) {
   }
   return result;
 }
+
+let result = checkCashRegister(19.5, 20, [["PENNY", 0.5], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 0], ["FIVE", 0], ["TEN", 0], ["TWENTY", 0], ["ONE HUNDRED", 0]])
+
+console.log(result)
