@@ -29,6 +29,13 @@ function steamrollArray(arr) {
     }
   }
   return flattened;
+  
+//   ==Alternative==
+//   let flattened = [].concat(...arr);
+//   if (flattened.some(Array.isArray)) {
+//     flattened = steamrollArray(flattened);
+//   }
+//   return flattened;
 }
 
 steamrollArray([1, [2], [3, [[4]]]]);
