@@ -65,17 +65,17 @@ function checkCashRegister(price, cash, cid) {
       }
       change = change.concat([[key, amount]]);
       changeVal -= amount;
-      changeVal = changeVal.toFixed(2); //fix JavaScript float precision
+      changeVal = +(changeVal.toFixed(2)); //fix JavaScript float precision
     }
-    if (changeVal == 0) {
+    if (changeVal === 0) {
       result.change = change;
     }
-    if (result.status == "CLOSED") {
+    if (result.status === "CLOSED") {
       result.change = cid;
     }
   }
 
-  if (changeVal != 0) {
+  if (changeVal !== 0) {
     result.status = "INSUFFICIENT_FUNDS";
     result.change = [];
   }
