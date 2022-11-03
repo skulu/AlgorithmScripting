@@ -67,7 +67,6 @@ function checkCashRegister(price, cash, cid) {
       change = change.concat([[key, amount]]);
       changeVal -= amount;
       changeVal = changeVal.toFixed(2);
-      // cid[i][1] -= amount;
     }
     if (changeVal == 0) {
       result.change = change;
